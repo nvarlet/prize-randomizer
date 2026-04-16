@@ -70,6 +70,7 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
 
     const totalDistance = (landingIndex - centerSlot) * SLOT_HEIGHT;
     const start = performance.now();
+    let lastTickSlot = -1;
     let lastTickTime = 0;
 
     function animate(now: number) {
@@ -80,13 +81,11 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
 
       setOffset(currentOffset);
 
-      if (now - lastTickTime >= MIN_TICK_INTERVAL) {
-        const currentSlot = Math.floor(currentOffset / SLOT_HEIGHT);
-        const prevSlot = Math.floor((displayList.length > 0 ? offset : 0) / SLOT_HEIGHT);
-        if (currentSlot !== prevSlot || lastTickTime === 0) {
-          lastTickTime = now;
-          playTick();
-        }
+      const currentSlot = Math.floor(currentOffset / SLOT_HEIGHT);
+      if (currentSlot !== lastTickSlot && now - lastTickTime >= MIN_TICK_INTERVAL) {
+        lastTickSlot = currentSlot;
+        lastTickTime = now;
+        playTick();
       }
 
       if (progress < 1) {
