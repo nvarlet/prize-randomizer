@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import confetti from "canvas-confetti";
 import { downloadTemplate, parseSpreadsheet, type Participant } from "./template";
 import SpinWheel from "./SpinWheel";
 import styles from "./App.module.css";
@@ -89,6 +90,18 @@ export default function App() {
     setWinner(selected);
     setPastWinners((prev) => [...prev, selected]);
     setState("winner");
+
+    confetti({
+      particleCount: 60,
+      spread: 55,
+      origin: { y: 0.65 },
+      colors: ["#18181b", "#0d9488", "#a1a1aa", "#d4d4d8"],
+      gravity: 1.2,
+      scalar: 0.8,
+      drift: 0,
+      ticks: 120,
+      disableForReducedMotion: true,
+    });
   }, []);
 
   const handleSpinAgain = useCallback(() => {
