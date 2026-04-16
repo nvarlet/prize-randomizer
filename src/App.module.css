@@ -20,7 +20,33 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 8px;
   min-height: 48px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.fsBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: var(--bg);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.fsBtn:hover {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-color: var(--border-hover);
 }
 
 .resetBtn {
@@ -405,6 +431,94 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ── Fullscreen Mode ── */
+.fullscreen {
+  background: var(--bg);
+}
+
+.fullscreen .main {
+  max-width: 100%;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 60px);
+}
+
+.headerFs {
+  background: transparent;
+  border-bottom: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+.headerFs .headerInner {
+  max-width: 100%;
+  padding: 16px 24px;
+}
+
+.fullscreen .randomizerSection {
+  gap: 36px;
+  width: 100%;
+  max-width: 640px;
+}
+
+.fullscreen .wheelArea {
+  max-width: 600px;
+}
+
+.fullscreen .spinBtn {
+  padding: 16px 44px;
+  font-size: 18px;
+  border-radius: var(--radius-lg);
+}
+
+.fullscreen .winnerCard {
+  padding: 36px 48px;
+}
+
+.fullscreen .winnerName {
+  font-size: 42px;
+}
+
+.fullscreen .winnerLabel {
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.fullscreen .winnerDetail {
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.fullscreen .spinAgainBtn {
+  padding: 10px 24px;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.fullscreen .hint {
+  font-size: 13px;
+}
+
+.fullscreen .fileInfo {
+  font-size: 14px;
+  padding: 8px 18px;
+}
+
+.fullscreen .pastWinners {
+  max-width: 600px;
+}
+
+.fullscreen .fsBtn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: var(--border);
 }
 
 @media (max-width: 600px) {

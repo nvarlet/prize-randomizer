@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2, Maximize, Minimize } from "lucide-react";
 import confetti from "canvas-confetti";
 import { downloadTemplate, parseSpreadsheet, type Participant } from "./template";
 import SpinWheel from "./SpinWheel";
@@ -19,6 +19,23 @@ export default function App() {
   const [dragging, setDragging] = useState(false);
   const [spinKey, setSpinKey] = useState(0);
   const [showPast, setShowPast] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    function onFsChange() {
+      setIsFullscreen(!!document.fullscreenElement);
+    }
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }, []);
 
   const handleFile = useCallback(async (file: File) => {
     setError("");
@@ -134,16 +151,29 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [state, eligibleParticipants, handleSpin]);
 
+  const isDrawScreen = state !== "upload" && state !== "loading";
+
   return (
-    <div className={styles.app}>
-      <header className={styles.header}>
+    <div className={`${styles.app} ${isFullscreen ? styles.fullscreen : ""}`}>
+      <header className={`${styles.header} ${isFullscreen ? styles.headerFs : ""}`}>
         <div className={styles.headerInner}>
-          {state !== "upload" && state !== "loading" && (
+          {isDrawScreen && !isFullscreen && (
             <button className={styles.resetBtn} onClick={handleReset}>
               <RotateCcw size={15} />
               Start Over
             </button>
           )}
+          <div className={styles.headerRight}>
+            {isDrawScreen && (
+              <button
+                className={styles.fsBtn}
+                onClick={toggleFullscreen}
+                title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              >
+                {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
