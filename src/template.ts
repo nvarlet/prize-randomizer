@@ -22,7 +22,12 @@ export interface Participant {
   email: string;
 }
 
-export function parseSpreadsheet(data: ArrayBuffer): Participant[] {
+export interface ParseResult {
+  participants: Participant[];
+  duplicatesRemoved: number;
+}
+
+export function parseSpreadsheet(data: ArrayBuffer): ParseResult {
   const wb = XLSX.read(data, { type: "array" });
   const ws = wb.Sheets[wb.SheetNames[0]];
   const rows = XLSX.utils.sheet_to_json<Record<string, string>>(ws);
@@ -41,10 +46,26 @@ export function parseSpreadsheet(data: ArrayBuffer): Participant[] {
 
   const emailCol = Object.keys(rows[0]).find((h) => h.toLowerCase().trim() === "email");
 
-  return rows
+  const all = rows
     .map((row) => ({
       name: String(row[nameCol] || "").trim(),
       email: emailCol ? String(row[emailCol] || "").trim() : "",
     }))
     .filter((p) => p.name.length > 0);
+
+  const seen = new Set<string>();
+  const unique: Participant[] = [];
+
+  for (const p of all) {
+    const key = `${p.name.toLowerCase()}|${p.email.toLowerCase()}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(p);
+    }
+  }
+
+  return {
+    participants: unique,
+    duplicatesRemoved: all.length - unique.length,
+  };
 }

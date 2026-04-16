@@ -5,6 +5,7 @@
   overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .container {
@@ -24,11 +25,11 @@
 }
 
 .slotWinner {
-  background: var(--highlight-soft);
+  background: var(--teal-soft);
 }
 
 .slotName {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text);
   white-space: nowrap;
@@ -43,9 +44,9 @@
   right: 0;
   height: 64px;
   transform: translateY(-50%);
-  border-top: 2px solid var(--highlight);
-  border-bottom: 2px solid var(--highlight);
-  background: var(--highlight-soft);
+  border-top: 2px solid var(--teal);
+  border-bottom: 2px solid var(--teal);
+  background: var(--teal-soft);
   z-index: 2;
   pointer-events: none;
 }
@@ -55,7 +56,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 35%;
   pointer-events: none;
   z-index: 1;
   background: linear-gradient(to bottom, var(--bg-card) 0%, transparent 100%);
@@ -66,7 +67,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 40%;
+  height: 35%;
   pointer-events: none;
   z-index: 1;
   background: linear-gradient(to top, var(--bg-card) 0%, transparent 100%);

@@ -11,9 +11,7 @@ interface Props {
 
 const SLOT_HEIGHT = 64;
 const VISIBLE_SLOTS = 7;
-const SPIN_DURATION = 4500;
-const IDLE_SPEED = 0.3;
-const TICK_INTERVAL_SLOTS = 1;
+const SPIN_DURATION = 7000;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -38,60 +36,33 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
   const [settled, setSettled] = useState(false);
   const [winnerIdx, setWinnerIdx] = useState(-1);
   const animFrameRef = useRef<number>(0);
-  const idleFrameRef = useRef<number>(0);
-  const idleOffsetRef = useRef(0);
+
+  const participantsRef = useRef(participants);
+  participantsRef.current = participants;
+
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   const idleList = useMemo(() => {
     if (participants.length === 0) return [];
-    return buildInfiniteList(participants, 200);
+    return buildInfiniteList(participants, VISIBLE_SLOTS);
   }, [participants]);
 
-  const idleMaxOffset = useMemo(
-    () => Math.max(0, (idleList.length - VISIBLE_SLOTS) * SLOT_HEIGHT),
-    [idleList]
-  );
-
-  // Idle scroll animation
+  // Only spinKey triggers the animation — refs for everything else
   useEffect(() => {
-    if (participants.length === 0 || spinKey > 0) return;
+    if (spinKey === 0) return;
 
-    let running = true;
-    idleOffsetRef.current = 0;
+    const currentParticipants = participantsRef.current;
+    if (currentParticipants.length === 0) return;
 
-    function tick() {
-      if (!running) return;
-      idleOffsetRef.current += IDLE_SPEED;
-      if (idleOffsetRef.current >= idleMaxOffset) {
-        idleOffsetRef.current = 0;
-      }
-      setOffset(idleOffsetRef.current);
-      idleFrameRef.current = requestAnimationFrame(tick);
-    }
-
-    setDisplayList([]);
-    setSettled(false);
-    setWinnerIdx(-1);
-    idleFrameRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      running = false;
-      cancelAnimationFrame(idleFrameRef.current);
-    };
-  }, [participants, spinKey, idleMaxOffset]);
-
-  // Spin animation — triggered by spinKey changes (> 0)
-  useEffect(() => {
-    if (spinKey === 0 || participants.length === 0) return;
-
-    cancelAnimationFrame(idleFrameRef.current);
     setSettled(false);
     setWinnerIdx(-1);
 
-    const selected = participants[Math.floor(Math.random() * participants.length)];
+    const selected = currentParticipants[Math.floor(Math.random() * currentParticipants.length)];
     const centerSlot = Math.floor(VISIBLE_SLOTS / 2);
 
-    const totalSpinSlots = participants.length * 8;
-    const list = buildInfiniteList(participants, totalSpinSlots + VISIBLE_SLOTS);
+    const totalSpinSlots = currentParticipants.length * 8;
+    const list = buildInfiniteList(currentParticipants, totalSpinSlots + VISIBLE_SLOTS);
 
     const landingIndex = totalSpinSlots - 1;
     list[landingIndex] = selected;
@@ -111,7 +82,7 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
       setOffset(currentOffset);
 
       const currentSlot = Math.floor(currentOffset / SLOT_HEIGHT);
-      if (currentSlot !== lastTickSlot && currentSlot % TICK_INTERVAL_SLOTS === 0) {
+      if (currentSlot !== lastTickSlot) {
         lastTickSlot = currentSlot;
         playTick();
       }
@@ -122,13 +93,13 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
         setSettled(true);
         setWinnerIdx(landingIndex);
         playDing();
-        onComplete(selected);
+        onCompleteRef.current(selected);
       }
     }
 
     animFrameRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animFrameRef.current);
-  }, [spinKey, participants, onComplete]);
+  }, [spinKey]);
 
   const listToShow = displayList.length > 0 ? displayList : idleList;
 
