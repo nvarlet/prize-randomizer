@@ -1,0 +1,394 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.headerInner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--highlight);
+}
+
+.resetBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+.resetBtn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* ── Upload Section ── */
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.heroText {
+  text-align: center;
+}
+
+.heroText h1 {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.heroText p {
+  margin-top: 12px;
+  font-size: 18px;
+  color: var(--text-muted);
+}
+
+.dropzone {
+  width: 100%;
+  max-width: 520px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  transition: all var(--transition);
+  position: relative;
+}
+
+.dropzone:hover {
+  border-color: var(--highlight);
+  background: var(--highlight-soft);
+}
+
+.dropzoneInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 32px;
+  text-align: center;
+}
+
+.dropzoneIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--highlight-soft);
+  color: var(--highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzoneTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dropzoneSub {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.templateCta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.templateBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--highlight);
+  border: 1px solid var(--highlight);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.templateBtn:hover {
+  background: var(--highlight-soft);
+}
+
+/* ── Randomizer Section ── */
+.randomizerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.fileName {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.participantCount {
+  margin-left: 4px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.wheelArea {
+  width: 100%;
+  max-width: 540px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.allDrawn {
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.spinBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 40px;
+  background: var(--highlight);
+  color: white;
+  border-radius: var(--radius);
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 4px 20px var(--highlight-glow);
+}
+
+.spinBtn:hover {
+  background: var(--highlight-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--highlight-glow);
+}
+
+.spinBtn:active {
+  transform: translateY(0);
+}
+
+/* ── Winner Card ── */
+.winnerCard {
+  text-align: center;
+  padding: 32px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 40px var(--gold-soft);
+  animation: fadeUp 0.5s ease-out;
+}
+
+.winnerLabel {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.winnerName {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.winnerDetail {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.spinAgainBtn {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: var(--highlight);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.spinAgainBtn:hover {
+  background: var(--highlight-hover);
+}
+
+/* ── Past Winners ── */
+.pastWinners {
+  width: 100%;
+  max-width: 540px;
+}
+
+.pastWinners h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.pastList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pastItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.pastRank {
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 13px;
+  min-width: 28px;
+}
+
+.pastName {
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+
+.excludeToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.excludeToggle input[type="checkbox"] {
+  accent-color: var(--highlight);
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .heroText h1 {
+    font-size: 28px;
+  }
+
+  .heroText p {
+    font-size: 16px;
+  }
+
+  .dropzoneInner {
+    padding: 32px 20px;
+  }
+
+  .winnerName {
+    font-size: 24px;
+  }
+
+  .spinBtn {
+    padding: 14px 32px;
+    font-size: 15px;
+  }
+}
