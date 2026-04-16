@@ -1,13 +1,20 @@
-const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
 let ctx: AudioContext | null = null;
 
-function getCtx(): AudioContext {
-  if (!ctx) ctx = new AudioCtx();
+function getCtx(): AudioContext | null {
+  if (ctx) return ctx;
+  if (typeof window === "undefined") return null;
+
+  const AudioCtx =
+    window.AudioContext || ((window as any).webkitAudioContext as typeof window.AudioContext | undefined);
+  if (!AudioCtx) return null;
+
+  ctx = new AudioCtx();
   return ctx;
 }
 
 export function playTick() {
   const audio = getCtx();
+  if (!audio) return;
   const osc = audio.createOscillator();
   const gain = audio.createGain();
 
@@ -24,6 +31,7 @@ export function playTick() {
 
 export function playDing() {
   const audio = getCtx();
+  if (!audio) return;
 
   [880, 1108, 1320].forEach((freq, i) => {
     const osc = audio.createOscillator();
