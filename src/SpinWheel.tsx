@@ -11,7 +11,9 @@ interface Props {
 
 const SLOT_HEIGHT = 64;
 const VISIBLE_SLOTS = 7;
-const SPIN_DURATION = 7000;
+const SPIN_DURATION = 5500;
+const TOTAL_SPIN_SLOTS = 80;
+const MIN_TICK_INTERVAL = 60;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -48,7 +50,6 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
     return buildInfiniteList(participants, VISIBLE_SLOTS);
   }, [participants]);
 
-  // Only spinKey triggers the animation — refs for everything else
   useEffect(() => {
     if (spinKey === 0) return;
 
@@ -61,17 +62,15 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
     const selected = currentParticipants[Math.floor(Math.random() * currentParticipants.length)];
     const centerSlot = Math.floor(VISIBLE_SLOTS / 2);
 
-    const totalSpinSlots = currentParticipants.length * 8;
-    const list = buildInfiniteList(currentParticipants, totalSpinSlots + VISIBLE_SLOTS);
-
-    const landingIndex = totalSpinSlots - 1;
+    const list = buildInfiniteList(currentParticipants, TOTAL_SPIN_SLOTS + VISIBLE_SLOTS);
+    const landingIndex = TOTAL_SPIN_SLOTS - 1;
     list[landingIndex] = selected;
 
     setDisplayList(list);
 
     const totalDistance = (landingIndex - centerSlot) * SLOT_HEIGHT;
     const start = performance.now();
-    let lastTickSlot = -1;
+    let lastTickTime = 0;
 
     function animate(now: number) {
       const elapsed = now - start;
@@ -81,10 +80,13 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
 
       setOffset(currentOffset);
 
-      const currentSlot = Math.floor(currentOffset / SLOT_HEIGHT);
-      if (currentSlot !== lastTickSlot) {
-        lastTickSlot = currentSlot;
-        playTick();
+      if (now - lastTickTime >= MIN_TICK_INTERVAL) {
+        const currentSlot = Math.floor(currentOffset / SLOT_HEIGHT);
+        const prevSlot = Math.floor((displayList.length > 0 ? offset : 0) / SLOT_HEIGHT);
+        if (currentSlot !== prevSlot || lastTickTime === 0) {
+          lastTickTime = now;
+          playTick();
+        }
       }
 
       if (progress < 1) {
