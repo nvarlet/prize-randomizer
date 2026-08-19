@@ -24,8 +24,9 @@
   padding: 0 24px;
 }
 
-.slotWinner {
-  background: var(--teal-soft);
+.slotWinner .slotName {
+  font-weight: 700;
+  color: var(--brand);
 }
 
 .slotName {
@@ -44,9 +45,9 @@
   right: 0;
   height: 64px;
   transform: translateY(-50%);
-  border-top: 2px solid var(--teal);
-  border-bottom: 2px solid var(--teal);
-  background: var(--teal-soft);
+  border-top: 2px solid var(--brand);
+  border-bottom: 2px solid var(--brand);
+  background: var(--brand-soft);
   z-index: 2;
   pointer-events: none;
 }

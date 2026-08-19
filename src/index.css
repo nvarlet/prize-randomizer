@@ -7,31 +7,37 @@
 }
 
 :root {
-  --bg: #fafafa;
+  /* Brand — IFYS navy */
+  --brand: #123a4f;
+  --brand-hover: #0c2a39;
+  --brand-mid: #2c6180;
+  --brand-soft: rgba(18, 58, 79, 0.06);
+
+  /* Surfaces */
+  --bg: #f5f8f9;
   --bg-card: #ffffff;
-  --bg-card-hover: #f5f5f5;
-  --bg-elevated: #f0f0f0;
-  --border: #e4e4e7;
-  --border-hover: #d1d1d6;
-  --text: #18181b;
-  --text-muted: #71717a;
-  --text-dim: #a1a1aa;
-  --accent: #18181b;
-  --accent-hover: #27272a;
-  --accent-soft: rgba(24, 24, 27, 0.05);
-  --teal: #0d9488;
-  --teal-hover: #0f766e;
-  --teal-soft: rgba(13, 148, 136, 0.08);
-  --danger: #e11d48;
-  --danger-soft: rgba(225, 29, 72, 0.07);
-  --warn: #b45309;
-  --warn-soft: rgba(180, 83, 9, 0.07);
+  --bg-card-hover: #f2f6f8;
+  --bg-elevated: #e9eff2;
+  --border: #dfe7eb;
+  --border-hover: #c3d1d8;
+
+  /* Text */
+  --text: #102630;
+  --text-muted: #5b7280;
+  --text-dim: #8ba0ac;
+
+  /* Status */
+  --danger: #b42318;
+  --danger-soft: rgba(180, 35, 24, 0.07);
+  --warn: #93610d;
+  --warn-soft: rgba(147, 97, 13, 0.08);
+
   --radius: 10px;
   --radius-sm: 6px;
   --radius-lg: 14px;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow: 0 1px 2px rgba(18, 58, 79, 0.06);
+  --shadow-md: 0 2px 8px rgba(18, 58, 79, 0.08);
+  --shadow-lg: 0 6px 20px rgba(18, 58, 79, 0.1);
   --transition: 150ms ease;
 }
 
@@ -59,7 +65,7 @@ button {
 }
 
 button:focus-visible {
-  outline: 2px solid var(--teal);
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
 
@@ -69,8 +75,8 @@ select {
 }
 
 ::selection {
-  background: var(--teal);
-  color: white;
+  background: var(--brand);
+  color: #ffffff;
 }
 
 ::-webkit-scrollbar {

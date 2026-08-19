@@ -112,7 +112,7 @@ export default function App() {
       particleCount: 60,
       spread: 55,
       origin: { y: 0.65 },
-      colors: ["#18181b", "#0d9488", "#a1a1aa", "#d4d4d8"],
+      colors: ["#123a4f", "#2c6180", "#7fa3b8", "#d7e2e9"],
       gravity: 1.2,
       scalar: 0.8,
       drift: 0,
@@ -157,13 +157,14 @@ export default function App() {
     <div className={`${styles.app} ${isFullscreen ? styles.fullscreen : ""}`}>
       <header className={`${styles.header} ${isFullscreen ? styles.headerFs : ""}`}>
         <div className={styles.headerInner}>
-          {isDrawScreen && !isFullscreen && (
-            <button className={styles.resetBtn} onClick={handleReset}>
-              <RotateCcw size={15} />
-              Start Over
-            </button>
-          )}
+          <img src="/ifys-logo.png" alt="IFYS — Strengthening the Human Spirit" className={styles.logo} />
           <div className={styles.headerRight}>
+            {isDrawScreen && !isFullscreen && (
+              <button className={styles.resetBtn} onClick={handleReset}>
+                <RotateCcw size={15} />
+                Start Over
+              </button>
+            )}
             {isDrawScreen && (
               <button
                 className={styles.fsBtn}
@@ -181,7 +182,7 @@ export default function App() {
         {(state === "upload" || state === "loading") && (
           <div className={styles.uploadSection}>
             <div className={styles.heroText}>
-              <h1>IFYS Prize Randomiser</h1>
+              <h1>Prize Randomiser</h1>
               <p>Import your participant list to randomly select a winner.</p>
             </div>
 

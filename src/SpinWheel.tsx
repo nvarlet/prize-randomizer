@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import type { Participant } from "./template";
-import { playTick, playDing } from "./sounds";
 import styles from "./SpinWheel.module.css";
 
 interface Props {
@@ -13,7 +12,6 @@ const SLOT_HEIGHT = 64;
 const VISIBLE_SLOTS = 7;
 const SPIN_DURATION = 5500;
 const TOTAL_SPIN_SLOTS = 80;
-const MIN_TICK_INTERVAL = 60;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -70,30 +68,19 @@ export default function SpinWheel({ participants, spinKey, onComplete }: Props) 
 
     const totalDistance = (landingIndex - centerSlot) * SLOT_HEIGHT;
     const start = performance.now();
-    let lastTickSlot = -1;
-    let lastTickTime = 0;
 
     function animate(now: number) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / SPIN_DURATION, 1);
       const eased = 1 - Math.pow(1 - progress, 4);
-      const currentOffset = eased * totalDistance;
 
-      setOffset(currentOffset);
-
-      const currentSlot = Math.floor(currentOffset / SLOT_HEIGHT);
-      if (currentSlot !== lastTickSlot && now - lastTickTime >= MIN_TICK_INTERVAL) {
-        lastTickSlot = currentSlot;
-        lastTickTime = now;
-        playTick();
-      }
+      setOffset(eased * totalDistance);
 
       if (progress < 1) {
         animFrameRef.current = requestAnimationFrame(animate);
       } else {
         setSettled(true);
         setWinnerIdx(landingIndex);
-        playDing();
         onCompleteRef.current(selected);
       }
     }

@@ -6,6 +6,7 @@
 
 /* ── Header ── */
 .header {
+  border-top: 3px solid var(--brand);
   border-bottom: 1px solid var(--border);
   background: var(--bg-card);
   position: sticky;
@@ -16,12 +17,17 @@
 .headerInner {
   max-width: 800px;
   margin: 0 auto;
-  padding: 12px 24px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  min-height: 48px;
+  gap: 12px;
+  min-height: 68px;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  display: block;
 }
 
 .headerRight {
@@ -45,7 +51,7 @@
 
 .fsBtn:hover {
   background: var(--bg-elevated);
-  color: var(--text);
+  color: var(--brand);
   border-color: var(--border-hover);
 }
 
@@ -64,7 +70,7 @@
 
 .resetBtn:hover {
   background: var(--bg-elevated);
-  color: var(--text);
+  color: var(--brand);
   border-color: var(--border-hover);
 }
 
@@ -92,8 +98,8 @@
 .heroText h1 {
   font-size: 32px;
   font-weight: 700;
-  letter-spacing: -0.3px;
-  color: var(--text);
+  letter-spacing: -0.4px;
+  color: var(--brand);
 }
 
 .heroText p {
@@ -114,13 +120,13 @@
 }
 
 .dropzone:hover {
-  border-color: var(--teal);
-  background: var(--teal-soft);
+  border-color: var(--brand);
+  background: var(--brand-soft);
 }
 
 .dropzoneActive {
-  border-color: var(--teal);
-  background: var(--teal-soft);
+  border-color: var(--brand);
+  background: var(--brand-soft);
   border-style: solid;
 }
 
@@ -137,8 +143,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--teal-soft);
-  color: var(--teal);
+  background: var(--brand-soft);
+  color: var(--brand);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,9 +216,9 @@
 }
 
 .templateBtn:hover {
-  color: var(--teal);
-  border-color: var(--teal);
-  background: var(--teal-soft);
+  color: var(--brand);
+  border-color: var(--brand);
+  background: var(--brand-soft);
 }
 
 /* ── Randomiser Section ── */
@@ -277,16 +283,17 @@
   align-items: center;
   gap: 8px;
   padding: 12px 32px;
-  background: var(--accent);
+  background: var(--brand);
   color: white;
   border-radius: var(--radius);
   font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.2px;
   box-shadow: var(--shadow-md);
 }
 
 .spinBtn:hover {
-  background: var(--accent-hover);
+  background: var(--brand-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-lg);
 }
@@ -307,6 +314,7 @@
   padding: 24px 32px;
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-top: 3px solid var(--brand);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   animation: fadeUp 0.4s ease-out;
@@ -317,14 +325,15 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--teal);
+  color: var(--brand-mid);
   margin-bottom: 4px;
 }
 
 .winnerName {
   font-size: 26px;
   font-weight: 700;
-  color: var(--text);
+  letter-spacing: -0.3px;
+  color: var(--brand);
 }
 
 .winnerDetail {
@@ -339,7 +348,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 18px;
-  background: var(--accent);
+  background: var(--brand);
   color: white;
   border-radius: var(--radius-sm);
   font-size: 13px;
@@ -347,7 +356,7 @@
 }
 
 .spinAgainBtn:hover {
-  background: var(--accent-hover);
+  background: var(--brand-hover);
 }
 
 /* ── Past Winners ── */
@@ -373,7 +382,7 @@
 
 .pastToggle:hover {
   background: var(--bg-card-hover);
-  color: var(--text);
+  color: var(--brand);
 }
 
 .pastList {
@@ -395,7 +404,7 @@
 
 .pastRank {
   font-weight: 600;
-  color: var(--teal);
+  color: var(--brand-mid);
   font-size: 12px;
   min-width: 22px;
 }
@@ -417,7 +426,7 @@
 }
 
 .excludeToggle input[type="checkbox"] {
-  accent-color: var(--teal);
+  accent-color: var(--brand);
   width: 14px;
   height: 14px;
 }
@@ -459,7 +468,7 @@
 
 .headerFs .headerInner {
   max-width: 100%;
-  padding: 16px 24px;
+  padding: 8px 24px;
 }
 
 .fullscreen .randomizerSection {
@@ -517,7 +526,7 @@
 }
 
 .fullscreen .fsBtn {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(18, 58, 79, 0.04);
   border-color: var(--border);
 }
 
@@ -528,6 +537,10 @@
 
   .heroText p {
     font-size: 14px;
+  }
+
+  .logo {
+    height: 32px;
   }
 
   .dropzoneInner {

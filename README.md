@@ -9,7 +9,7 @@ A small web app for drawing winners from a participant spreadsheet. Built for cl
 - Random draw with a scroll animation; optional **fullscreen** for projection
 - **Duplicate** rows removed automatically (matched on name + email)
 - Optional exclusion of previous winners from later draws
-- Light sound feedback and a subtle **confetti** moment on selection
+- A subtle **confetti** moment on selection
 
 ## Requirements
 
