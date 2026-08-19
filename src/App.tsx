@@ -1,7 +1,8 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2, Maximize, Minimize } from "lucide-react";
+import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2, Maximize, Minimize, Volume2, VolumeX } from "lucide-react";
 import confetti from "canvas-confetti";
 import { downloadTemplate, parseSpreadsheet, type Participant } from "./template";
+import { primeAudio, setMuted, isMuted } from "./sounds";
 import SpinWheel from "./SpinWheel";
 import styles from "./App.module.css";
 
@@ -20,6 +21,15 @@ export default function App() {
   const [spinKey, setSpinKey] = useState(0);
   const [showPast, setShowPast] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [soundOff, setSoundOff] = useState(isMuted);
+
+  const toggleSound = useCallback(() => {
+    setSoundOff((off) => {
+      setMuted(!off);
+      if (off) primeAudio();
+      return !off;
+    });
+  }, []);
 
   useEffect(() => {
     function onFsChange() {
@@ -99,6 +109,9 @@ export default function App() {
 
   const handleSpin = useCallback(() => {
     if (eligibleParticipants.length === 0) return;
+    // Opened here, inside the gesture, so the first tick isn't swallowed by the
+    // browser's autoplay policy.
+    primeAudio();
     setState("spinning");
     setSpinKey((k) => k + 1);
   }, [eligibleParticipants]);
@@ -166,13 +179,22 @@ export default function App() {
               </button>
             )}
             {isDrawScreen && (
-              <button
-                className={styles.fsBtn}
-                onClick={toggleFullscreen}
-                title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-              >
-                {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
-              </button>
+              <>
+                <button
+                  className={styles.fsBtn}
+                  onClick={toggleSound}
+                  title={soundOff ? "Turn sound on" : "Turn sound off"}
+                >
+                  {soundOff ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                </button>
+                <button
+                  className={styles.fsBtn}
+                  onClick={toggleFullscreen}
+                  title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                >
+                  {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
+                </button>
+              </>
             )}
           </div>
         </div>
