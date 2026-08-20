@@ -229,11 +229,19 @@
   gap: 24px;
 }
 
-.fileInfo {
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metaChip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
+  gap: 7px;
+  padding: 6px 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -242,14 +250,18 @@
   box-shadow: var(--shadow);
 }
 
+.metaChip strong {
+  font-weight: 700;
+  color: var(--brand);
+}
+
 .fileName {
   font-weight: 600;
   color: var(--text);
-}
-
-.participantCount {
-  padding-left: 8px;
-  border-left: 1px solid var(--border);
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .warnBanner {
@@ -266,16 +278,67 @@
   max-width: 460px;
 }
 
-.controls {
+/* Held even when empty so a winner appearing (or the next draw clearing it)
+   does not shove the button around in front of the room. */
+.winnerStage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 460px;
+  min-height: 108px;
+}
+
+/* Held at a fixed height so swapping between the button and the drawing status
+   doesn't shuffle the page under the audience. */
+.actionArea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 10px;
+  min-height: 74px;
 }
 
 .allDrawn {
   color: var(--text-muted);
   font-size: 14px;
+}
+
+.drawing {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--brand-mid);
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 4px;
+}
+
+.dots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+.dots i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.dots i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes pulse {
+  0%, 60%, 100% { opacity: 0.25; }
+  30% { opacity: 1; }
 }
 
 .spinBtn {
@@ -310,8 +373,9 @@
 
 /* ── Winner Card ── */
 .winnerCard {
+  width: 100%;
   text-align: center;
-  padding: 24px 32px;
+  padding: 22px 32px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-top: 3px solid var(--brand);
@@ -321,42 +385,30 @@
 }
 
 .winnerLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--brand-mid);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .winnerName {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
+  line-height: 1.15;
   color: var(--brand);
 }
 
 .winnerDetail {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 14px;
   color: var(--text-muted);
-}
-
-.spinAgainBtn {
-  margin-top: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 18px;
-  background: var(--brand);
-  color: white;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.spinAgainBtn:hover {
-  background: var(--brand-hover);
 }
 
 /* ── Past Winners ── */
@@ -449,11 +501,11 @@
 
 .fullscreen .main {
   max-width: 100%;
-  padding: 0 40px;
+  padding: 88px 48px 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
 }
 
 .headerFs {
@@ -468,66 +520,92 @@
 
 .headerFs .headerInner {
   max-width: 100%;
-  padding: 8px 24px;
+  padding: 10px 28px;
+}
+
+.headerFs .logo {
+  opacity: 0.9;
 }
 
 .fullscreen .randomizerSection {
-  gap: 36px;
+  gap: 28px;
   width: 100%;
-  max-width: 640px;
+  max-width: 880px;
 }
 
-.fullscreen .wheelArea {
-  max-width: 600px;
+.fullscreen .wheelArea,
+.fullscreen .winnerStage {
+  max-width: 760px;
+}
+
+.fullscreen .winnerStage {
+  min-height: 132px;
+}
+
+.fullscreen .actionArea {
+  min-height: 92px;
 }
 
 .fullscreen .spinBtn {
-  padding: 16px 44px;
+  padding: 16px 48px;
   font-size: 18px;
   border-radius: var(--radius-lg);
 }
 
+.fullscreen .drawing {
+  font-size: 18px;
+}
+
+.fullscreen .dots i {
+  width: 5px;
+  height: 5px;
+}
+
 .fullscreen .winnerCard {
-  padding: 36px 48px;
+  padding: 26px 40px 28px;
+  border-top-width: 4px;
 }
 
 .fullscreen .winnerName {
-  font-size: 42px;
+  font-size: 52px;
 }
 
 .fullscreen .winnerLabel {
   font-size: 13px;
-  letter-spacing: 2px;
-  margin-bottom: 8px;
-}
-
-.fullscreen .winnerDetail {
-  font-size: 16px;
-  margin-top: 4px;
-}
-
-.fullscreen .spinAgainBtn {
-  padding: 10px 24px;
-  font-size: 14px;
-  margin-top: 20px;
+  letter-spacing: 2.2px;
+  margin-bottom: 10px;
 }
 
 .fullscreen .hint {
   font-size: 13px;
 }
 
-.fullscreen .fileInfo {
-  font-size: 14px;
-  padding: 8px 18px;
-}
-
-.fullscreen .pastWinners {
-  max-width: 600px;
-}
-
 .fullscreen .fsBtn {
   background: rgba(18, 58, 79, 0.04);
   border-color: var(--border);
+}
+
+/* A projector is rarely 1080p tall. Tighten up rather than scroll. */
+@media (max-height: 820px) {
+  .fullscreen .randomizerSection {
+    gap: 16px;
+  }
+
+  .fullscreen .main {
+    padding: 64px 40px 24px;
+  }
+
+  .fullscreen .winnerStage {
+    min-height: 96px;
+  }
+
+  .fullscreen .winnerName {
+    font-size: 36px;
+  }
+
+  .fullscreen .winnerCard {
+    padding: 16px 32px 18px;
+  }
 }
 
 @media (max-width: 600px) {

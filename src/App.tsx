@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2, Maximize, Minimize, Volume2, VolumeX } from "lucide-react";
+import { Upload, Download, Sparkles, RotateCcw, Users, X, ChevronDown, ChevronUp, Loader2, Maximize, Minimize, Volume2, VolumeX, Trophy } from "lucide-react";
 import confetti from "canvas-confetti";
 import { downloadTemplate, parseSpreadsheet, type Participant } from "./template";
 import { primeAudio, setMuted, isMuted } from "./sounds";
@@ -112,6 +112,7 @@ export default function App() {
     // Opened here, inside the gesture, so the first tick isn't swallowed by the
     // browser's autoplay policy.
     primeAudio();
+    setWinner(null);
     setState("spinning");
     setSpinKey((k) => k + 1);
   }, [eligibleParticipants]);
@@ -134,11 +135,6 @@ export default function App() {
     });
   }, []);
 
-  const handleSpinAgain = useCallback(() => {
-    setWinner(null);
-    setState("ready");
-  }, []);
-
   const handleReset = useCallback(() => {
     setState("upload");
     setParticipants([]);
@@ -154,11 +150,15 @@ export default function App() {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      // A focused button already fires on Space, so let it handle itself.
+      if (e.target instanceof HTMLButtonElement) return;
+      if (e.key !== " " && e.key !== "Enter") return;
+      // Available straight after a win too, so consecutive prizes are one press.
+      if (state !== "ready" && state !== "winner") return;
+      if (eligibleParticipants.length === 0) return;
 
-      if ((e.key === " " || e.key === "Enter") && state === "ready" && eligibleParticipants.length > 0) {
-        e.preventDefault();
-        handleSpin();
-      }
+      e.preventDefault();
+      handleSpin();
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -259,61 +259,84 @@ export default function App() {
           </div>
         )}
 
-        {(state === "ready" || state === "spinning" || state === "winner") && (
+        {isDrawScreen && (
           <div className={styles.randomizerSection}>
-            <div className={styles.fileInfo}>
-              <Users size={15} />
-              <span className={styles.fileName}>{fileName}</span>
-              <span className={styles.participantCount}>
-                {eligibleParticipants.length} eligible of {participants.length} total
-              </span>
-            </div>
+            {!isFullscreen && (
+              <>
+                <div className={styles.metaRow}>
+                  <span className={styles.metaChip}>
+                    <Users size={14} />
+                    <span className={styles.fileName}>{fileName}</span>
+                  </span>
+                  <span className={styles.metaChip}>
+                    <strong>{eligibleParticipants.length}</strong> of {participants.length} remaining
+                  </span>
+                </div>
 
-            {dupeCount > 0 && (
-              <div className={styles.warnBanner}>
-                {dupeCount} duplicate {dupeCount === 1 ? "entry was" : "entries were"} removed.
-              </div>
+                {dupeCount > 0 && (
+                  <div className={styles.warnBanner}>
+                    {dupeCount} duplicate {dupeCount === 1 ? "entry was" : "entries were"} removed.
+                  </div>
+                )}
+              </>
             )}
 
             <div className={styles.wheelArea}>
               <SpinWheel
                 participants={eligibleParticipants}
                 spinKey={spinKey}
+                isFullscreen={isFullscreen}
                 onComplete={handleSpinComplete}
               />
             </div>
 
-            {state === "ready" && (
-              <div className={styles.controls}>
-                {eligibleParticipants.length === 0 ? (
-                  <p className={styles.allDrawn}>
-                    All participants have been drawn. Reset to start over.
-                  </p>
-                ) : (
-                  <>
-                    <button className={styles.spinBtn} onClick={handleSpin}>
-                      <Sparkles size={18} />
-                      Draw a Winner
+            <div className={styles.winnerStage}>
+              {state === "winner" && winner && (
+                <div className={styles.winnerCard}>
+                  <div className={styles.winnerLabel}>
+                    <Trophy size={13} />
+                    Winner
+                  </div>
+                  <h2 className={styles.winnerName}>{winner.name}</h2>
+                  {winner.email && !isFullscreen && (
+                    <p className={styles.winnerDetail}>{winner.email}</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className={styles.actionArea}>
+              {eligibleParticipants.length === 0 ? (
+                <>
+                  <p className={styles.allDrawn}>Everyone has been drawn.</p>
+                  {!isFullscreen && (
+                    <button className={styles.resetBtn} onClick={handleReset}>
+                      <RotateCcw size={15} />
+                      Start Over
                     </button>
-                    <p className={styles.hint}>or press Space</p>
-                  </>
-                )}
-              </div>
-            )}
+                  )}
+                </>
+              ) : state === "spinning" ? (
+                <p className={styles.drawing}>
+                  Drawing
+                  <span className={styles.dots} aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </p>
+              ) : (
+                <>
+                  <button className={styles.spinBtn} onClick={handleSpin}>
+                    <Sparkles size={18} />
+                    Draw a Winner
+                  </button>
+                  <p className={styles.hint}>or press Space</p>
+                </>
+              )}
+            </div>
 
-            {state === "winner" && winner && (
-              <div className={styles.winnerCard}>
-                <div className={styles.winnerLabel}>Selected</div>
-                <h2 className={styles.winnerName}>{winner.name}</h2>
-                {winner.email && <p className={styles.winnerDetail}>{winner.email}</p>}
-                <button className={styles.spinAgainBtn} onClick={handleSpinAgain}>
-                  <Sparkles size={15} />
-                  Draw Another
-                </button>
-              </div>
-            )}
-
-            {pastWinners.length > 0 && (
+            {!isFullscreen && pastWinners.length > 0 && (
               <div className={styles.pastWinners}>
                 <button
                   className={styles.pastToggle}
